@@ -1,10 +1,11 @@
 # Deploying Ransbet IIMS live (PythonAnywhere, free)
 
 This puts the system online so anyone can log in from any device. Your live
-address will be **`https://YOURUSERNAME.pythonanywhere.com`**.
+address will be **`https://aizen004.pythonanywhere.com`**.
 
-> Tip: when you sign up, choose the username **`ransbetiims`** so your URL reads
-> `ransbetiims.pythonanywhere.com`.
+> Note: the PythonAnywhere username is **`aizen004`** (it can't be renamed). The
+> app itself is branded "Ransbet IIMS" on every page. A custom `ransbetiims.com`
+> would need a paid plan + domain purchase.
 
 You only do this once. Updating later is just `git pull` + **Reload** (step 6).
 

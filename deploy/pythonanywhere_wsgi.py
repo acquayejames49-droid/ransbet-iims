@@ -9,7 +9,7 @@ import sys
 import os
 
 # 1) Your PythonAnywhere username (the one in your URL):
-USERNAME = "ransbetiims"          # <-- CHANGE to your PythonAnywhere username
+USERNAME = "aizen004"             # <-- your PythonAnywhere username
 
 # 2) The MySQL password you set on the "Databases" tab:
 DB_PASSWORD = "YOUR_DB_PASSWORD"  # <-- CHANGE this
