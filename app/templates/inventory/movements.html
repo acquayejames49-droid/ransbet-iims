@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Stock movements · Ransbet IIMS{% endblock %}
+{% block content %}
+<h2 class="mb-3">Stock movements</h2>
+<div class="card">
+<table class="table table-sm table-hover align-middle mb-0">
+  <thead class="table-light">
+    <tr><th>When</th><th>Product</th><th>Type</th><th class="text-end">Change</th>
+        <th class="text-end">Stock after</th><th>By</th><th>Note</th></tr>
+  </thead>
+  <tbody>
+    {% for m in movements %}
+    <tr>
+      <td class="text-nowrap small">{{ m.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+      <td>{{ m.product.name if m.product else '—' }}</td>
+      <td>
+        {% if m.movement_type == 'stock_in' %}<span class="badge bg-primary">Received</span>
+        {% elif m.movement_type == 'sale' %}<span class="badge bg-success">Sale</span>
+        {% else %}<span class="badge bg-warning text-dark">Adjustment</span>{% endif %}
+      </td>
+      <td class="text-end {{ 'text-success' if m.quantity > 0 else 'text-danger' }}">{{ '%+d'|format(m.quantity) }}</td>
+      <td class="text-end">{{ m.stock_after }}</td>
+      <td class="small">{{ m.user.name if m.user else 'system' }}</td>
+      <td class="small text-muted">{{ m.note or '' }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="7" class="text-center text-muted p-4">No movements yet.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}

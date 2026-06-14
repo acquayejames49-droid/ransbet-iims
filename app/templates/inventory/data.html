@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block title %}Import / Data · Ransbet IIMS{% endblock %}
+{% block content %}
+<h2 class="mb-1">Import / Data tools</h2>
+<p class="text-muted">Bulk-load Ransbet's real catalogue, export data, or clear what's here.</p>
+
+<div class="row g-2 mb-4">
+  <div class="col-6 col-md-3"><div class="card text-center"><div class="card-body py-2">
+    <div class="h4 mb-0">{{ counts.products }}</div><div class="small text-muted">Products</div></div></div></div>
+  <div class="col-6 col-md-3"><div class="card text-center"><div class="card-body py-2">
+    <div class="h4 mb-0">{{ counts.suppliers }}</div><div class="small text-muted">Suppliers</div></div></div></div>
+  <div class="col-6 col-md-3"><div class="card text-center"><div class="card-body py-2">
+    <div class="h4 mb-0">{{ counts.categories }}</div><div class="small text-muted">Categories</div></div></div></div>
+  <div class="col-6 col-md-3"><div class="card text-center"><div class="card-body py-2">
+    <div class="h4 mb-0">{{ counts.sales }}</div><div class="small text-muted">Sales records</div></div></div></div>
+</div>
+
+<div class="row g-4">
+  <!-- Import products -->
+  <div class="col-lg-6">
+    <div class="card h-100"><div class="card-body">
+      <h5 class="card-title">1. Import products</h5>
+      <p class="small text-muted">Upload a CSV or Excel file of Ransbet's catalogue. Existing
+        products (matched by barcode or name) are updated; new ones are created.
+        Categories and suppliers are created automatically from their names.</p>
+      <a class="btn btn-sm btn-outline-secondary mb-2" href="{{ url_for('data.template_products') }}">
+        ⬇ Download products template
+      </a>
+      <form method="post" action="{{ url_for('data.import_products') }}" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="input-group">
+          <input class="form-control" type="file" name="file" accept=".csv,.xlsx,.xls" required>
+          <button class="btn btn-primary">Import</button>
+        </div>
+      </form>
+      <div class="small text-muted mt-2">Columns: name, sku, category, supplier,
+        unit_price, cost_price, current_stock, reorder_point, unit.</div>
+    </div></div>
+  </div>
+
+  <!-- Import sales -->
+  <div class="col-lg-6">
+    <div class="card h-100"><div class="card-body">
+      <h5 class="card-title">2. Import sales history</h5>
+      <p class="small text-muted">Upload past sales (needed to train the demand forecast in
+        Phase 4). This only records history — it does not change current stock levels.</p>
+      <a class="btn btn-sm btn-outline-secondary mb-2" href="{{ url_for('data.template_sales') }}">
+        ⬇ Download sales template
+      </a>
+      <form method="post" action="{{ url_for('data.import_sales') }}" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="input-group">
+          <input class="form-control" type="file" name="file" accept=".csv,.xlsx,.xls" required>
+          <button class="btn btn-primary">Import</button>
+        </div>
+      </form>
+      <div class="small text-muted mt-2">Columns: date, sku (or product), quantity, unit_price.</div>
+    </div></div>
+  </div>
+
+  <!-- Export -->
+  <div class="col-lg-6">
+    <div class="card h-100"><div class="card-body">
+      <h5 class="card-title">3. Export current catalogue</h5>
+      <p class="small text-muted">Download everything currently in the system as a CSV
+        (useful as a backup or to hand to Ransbet for checking).</p>
+      <a class="btn btn-success" href="{{ url_for('data.export_products') }}">⬇ Export products CSV</a>
+    </div></div>
+  </div>
+
+  <!-- Danger zone -->
+  <div class="col-lg-6">
+    <div class="card h-100 border border-danger"><div class="card-body">
+      <h5 class="card-title text-danger">4. Danger zone — clear data</h5>
+      <p class="small text-muted">Use this to remove the demo data before loading Ransbet's
+        real data. This cannot be undone.</p>
+      <form method="post" action="{{ url_for('data.clear_data') }}"
+            onsubmit="return confirm('This permanently deletes the selected data. Continue?');">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="mb-2">
+          <select class="form-select" name="scope">
+            <option value="all">Delete everything (products, suppliers, categories, sales)</option>
+            <option value="transactions">Keep products, delete only sales &amp; movements (reset stock to 0)</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <input class="form-control" name="confirm" placeholder="Type DELETE to confirm">
+          <button class="btn btn-danger">Clear data</button>
+        </div>
+      </form>
+    </div></div>
+  </div>
+</div>
+{% endblock %}

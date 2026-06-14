@@ -1,0 +1,33 @@
+/* Ransbet green theme for the Flask-rendered pages (login, products, forms…) */
+body { background-color: #eef2ee; }
+
+.navbar-brand { letter-spacing: 0.5px; }
+
+/* Green header to match the React dashboard */
+.rb-navbar { background: linear-gradient(90deg, #14532d, #15803d) !important; }
+
+.card { border: none; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08); }
+
+/* Make Bootstrap's primary buttons/links Ransbet green */
+.btn-primary {
+  --bs-btn-bg: #16a34a; --bs-btn-border-color: #16a34a;
+  --bs-btn-hover-bg: #15803d; --bs-btn-hover-border-color: #15803d;
+  --bs-btn-active-bg: #14532d; --bs-btn-active-border-color: #14532d;
+}
+.btn-outline-primary {
+  --bs-btn-color: #15803d; --bs-btn-border-color: #15803d;
+  --bs-btn-hover-bg: #15803d; --bs-btn-hover-border-color: #15803d;
+}
+a { color: #15803d; }
+.text-primary { color: #15803d !important; }
+
+/* Live indicator dot */
+.live-dot {
+  display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+  background: #16a34a; margin-right: 4px; animation: pulse 1.5s infinite;
+}
+@keyframes pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.6); }
+  70%  { box-shadow: 0 0 0 8px rgba(22, 163, 74, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0); }
+}

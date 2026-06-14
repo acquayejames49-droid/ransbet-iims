@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Reports · Ransbet IIMS{% endblock %}
+{% block content %}
+<h2 class="mb-1">Reports</h2>
+<p class="text-muted">Export inventory, sales and forecast-accuracy reports as PDF or CSV.</p>
+
+<div class="row g-4">
+  <div class="col-lg-4">
+    <div class="card h-100"><div class="card-body">
+      <h5 class="card-title">Inventory report</h5>
+      <p class="small text-muted">Current stock, reorder points, prices and stock value for every product.</p>
+      <a class="btn btn-primary" href="{{ url_for('reports.inventory_pdf') }}">⬇ PDF</a>
+      <a class="btn btn-outline-primary" href="{{ url_for('reports.inventory_csv') }}">⬇ CSV</a>
+    </div></div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card h-100"><div class="card-body">
+      <h5 class="card-title">Sales report</h5>
+      <p class="small text-muted">All sales within a date range, with totals.</p>
+      <form class="row g-2 mb-2" id="salesForm">
+        <div class="col-6">
+          <label class="form-label small mb-0">From</label>
+          <input class="form-control form-control-sm" type="date" id="start" value="{{ default_start }}">
+        </div>
+        <div class="col-6">
+          <label class="form-label small mb-0">To</label>
+          <input class="form-control form-control-sm" type="date" id="end" value="{{ default_end }}">
+        </div>
+      </form>
+      <a class="btn btn-primary" id="salesPdf" href="#">⬇ PDF</a>
+      <a class="btn btn-outline-primary" id="salesCsv" href="#">⬇ CSV</a>
+    </div></div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card h-100"><div class="card-body">
+      <h5 class="card-title">Forecast accuracy report</h5>
+      <p class="small text-muted">MAPE / MAE / RMSE per product from the AI model's back-test.</p>
+      <a class="btn btn-primary" href="{{ url_for('reports.forecast_pdf') }}">⬇ PDF</a>
+      <a class="btn btn-outline-primary" href="{{ url_for('reports.forecast_csv') }}">⬇ CSV</a>
+    </div></div>
+  </div>
+</div>
+
+<script>
+  // Add the chosen date range to the sales report links.
+  function updateSalesLinks() {
+    const s = document.getElementById('start').value;
+    const e = document.getElementById('end').value;
+    const qs = `?start=${s}&end=${e}`;
+    document.getElementById('salesPdf').href = "{{ url_for('reports.sales_pdf') }}" + qs;
+    document.getElementById('salesCsv').href = "{{ url_for('reports.sales_csv') }}" + qs;
+  }
+  document.getElementById('start').addEventListener('change', updateSalesLinks);
+  document.getElementById('end').addEventListener('change', updateSalesLinks);
+  updateSalesLinks();
+</script>
+{% endblock %}

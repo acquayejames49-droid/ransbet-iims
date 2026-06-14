@@ -1,0 +1,33 @@
+# Python virtual environment
+.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Local database file
+iims.db
+*.sqlite3
+
+# Secrets / environment
+.env
+
+# Trained ML models (large binaries)
+models/*.pkl
+models/*.joblib
+
+# Node / React
+frontend/node_modules/
+npm-debug.log*
+
+# NOTE: the React build (app/static/dashboard/) IS committed on purpose so it
+# can deploy to PythonAnywhere, which has no Node to build it. Rebuild locally
+# with: cd frontend && npm run build
+
+# Editor / OS junk
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Temp helper scripts
+_smoke*.py

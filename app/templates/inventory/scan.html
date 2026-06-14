@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Scan · Ransbet IIMS{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <h2 class="mb-1">Barcode scan</h2>
+    <p class="text-muted">Scan a product barcode with a USB scanner (it types the code and presses Enter),
+       type it manually, or use your webcam.</p>
+
+    <div class="card mb-3"><div class="card-body">
+      <form method="get" action="{{ url_for('inventory.scan') }}" class="row g-2">
+        <div class="col">
+          <input class="form-control form-control-lg" type="text" name="code"
+                 value="{{ code }}" placeholder="Scan or type barcode / product name…" autofocus autocomplete="off">
+        </div>
+        <div class="col-auto">
+          <button class="btn btn-primary btn-lg" type="submit">Find</button>
+        </div>
+      </form>
+      <button class="btn btn-outline-secondary btn-sm mt-2" type="button" id="camBtn">📷 Scan with webcam</button>
+      <div id="reader" style="width:100%; max-width:380px; display:none;" class="mt-2"></div>
+    </div></div>
+
+    {% if searched and not product %}
+      <div class="alert alert-warning">No product found for “{{ code }}”.
+        <a href="{{ url_for('inventory.product_new') }}">Add it as a new product?</a></div>
+    {% endif %}
+
+    {% if product %}
+    <div class="card border-success"><div class="card-body">
+      <div class="d-flex justify-content-between align-items-start">
+        <div>
+          <h4 class="mb-1">{{ product.name }}</h4>
+          <div class="text-muted">Barcode: <code>{{ product.sku or '—' }}</code>
+            · {{ product.category.name if product.category else 'Uncategorised' }}</div>
+          <div class="mt-2">Price: <strong>GHS {{ '%.2f'|format(product.unit_price) }}</strong></div>
+        </div>
+        <div class="text-end">
+          <div class="small text-muted">In stock</div>
+          <span class="badge bg-{{ product.status_color }} fs-5">{{ product.current_stock }} {{ product.unit }}</span>
+        </div>
+      </div>
+      {% if can_edit %}
+      <hr>
+      <a class="btn btn-success" href="{{ url_for('inventory.stock_sell', pid=product.id) }}">Record sale</a>
+      <a class="btn btn-outline-primary" href="{{ url_for('inventory.stock_receive', pid=product.id) }}">Receive stock</a>
+      <a class="btn btn-outline-secondary" href="{{ url_for('inventory.stock_adjust', pid=product.id) }}">Adjust</a>
+      {% endif %}
+    </div></div>
+    {% endif %}
+  </div>
+</div>
+
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<script>
+  // Optional webcam scanning. The USB-scanner path above works without this.
+  document.getElementById('camBtn').addEventListener('click', function () {
+    const reader = document.getElementById('reader');
+    reader.style.display = 'block';
+    const scanner = new Html5Qrcode("reader");
+    scanner.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 },
+      function (decodedText) {
+        scanner.stop().then(() => {
+          document.querySelector('input[name=code]').value = decodedText;
+          document.querySelector('form').submit();
+        });
+      },
+      function () { /* ignore per-frame scan errors */ }
+    ).catch(err => { reader.innerHTML = '<div class="text-danger small">Camera unavailable: ' + err + '</div>'; });
+  });
+</script>
+{% endblock %}

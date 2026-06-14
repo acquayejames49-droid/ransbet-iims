@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} · Ransbet IIMS{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <h2 class="mb-1">{{ title }}</h2>
+    <p class="text-muted">Current stock:
+      <span class="badge bg-{{ product.status_color }}">{{ product.current_stock }} {{ product.unit }}</span>
+    </p>
+    <div class="card"><div class="card-body">
+      <form method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+        {% if action == 'receive' %}
+          <div class="mb-3">
+            <label class="form-label">Quantity received</label>
+            <input class="form-control" type="number" name="quantity" min="1" required autofocus>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Note (optional)</label>
+            <input class="form-control" name="note" placeholder="e.g. delivery from supplier">
+          </div>
+          <button class="btn btn-primary">Add to stock</button>
+
+        {% elif action == 'sell' %}
+          <div class="mb-3">
+            <label class="form-label">Quantity sold</label>
+            <input class="form-control" type="number" name="quantity" min="1" max="{{ product.current_stock }}" required autofocus>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Unit price (GHS)</label>
+            <input class="form-control" type="number" step="0.01" name="unit_price" value="{{ '%.2f'|format(product.unit_price) }}">
+          </div>
+          <button class="btn btn-success">Record sale</button>
+
+        {% elif action == 'adjust' %}
+          <div class="mb-3">
+            <label class="form-label">New counted stock</label>
+            <input class="form-control" type="number" name="new_count" min="0" value="{{ product.current_stock }}" required autofocus>
+            <div class="form-text">Use this after a physical count to correct the system figure.</div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Reason (optional)</label>
+            <input class="form-control" name="note" placeholder="e.g. damaged units, recount">
+          </div>
+          <button class="btn btn-warning">Save adjustment</button>
+        {% endif %}
+
+        <a class="btn btn-link" href="{{ url_for('inventory.products') }}">Cancel</a>
+      </form>
+    </div></div>
+  </div>
+</div>
+{% endblock %}

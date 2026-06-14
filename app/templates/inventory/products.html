@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Products · Ransbet IIMS{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2 class="mb-0">Products</h2>
+  {% if can_edit %}
+  <a class="btn btn-primary" href="{{ url_for('inventory.product_new') }}">+ New product</a>
+  {% endif %}
+</div>
+
+<form class="mb-3" method="get">
+  <div class="input-group" style="max-width:420px">
+    <input class="form-control" name="q" value="{{ q }}" placeholder="Search by name or barcode...">
+    <button class="btn btn-outline-secondary">Search</button>
+  </div>
+</form>
+
+<div class="card">
+<table class="table table-hover align-middle mb-0">
+  <thead class="table-light">
+    <tr>
+      <th>Product</th><th>Category</th><th>Barcode</th>
+      <th class="text-end">Price</th><th class="text-center">Stock</th>
+      <th>Status</th><th class="text-end">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for p in products %}
+    <tr>
+      <td><strong>{{ p.name }}</strong><div class="small text-muted">{{ p.supplier.name if p.supplier else '' }}</div></td>
+      <td>{{ p.category.name if p.category else '—' }}</td>
+      <td><code>{{ p.sku or '—' }}</code></td>
+      <td class="text-end">GHS {{ '%.2f'|format(p.unit_price) }}</td>
+      <td class="text-center">{{ p.current_stock }} {{ p.unit }}</td>
+      <td><span class="badge bg-{{ p.status_color }}">{{ p.status_label }}</span></td>
+      <td class="text-end text-nowrap">
+        {% if can_edit %}
+        <a class="btn btn-sm btn-success" href="{{ url_for('inventory.stock_sell', pid=p.id) }}">Sell</a>
+        <a class="btn btn-sm btn-outline-primary" href="{{ url_for('inventory.stock_receive', pid=p.id) }}">Receive</a>
+        <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('inventory.stock_adjust', pid=p.id) }}">Adjust</a>
+        <a class="btn btn-sm btn-outline-dark" href="{{ url_for('inventory.product_edit', pid=p.id) }}">Edit</a>
+        {% endif %}
+        {% if can_manage %}
+        <form class="d-inline" method="post" action="{{ url_for('inventory.product_delete', pid=p.id) }}"
+              onsubmit="return confirm('Remove {{ p.name }} from the catalogue?');">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button class="btn btn-sm btn-outline-danger">Delete</button>
+        </form>
+        {% endif %}
+      </td>
+    </tr>
+    {% else %}
+    <tr><td colspan="7" class="text-center text-muted p-4">No products yet.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+# Core web framework
+Flask
+Flask-SQLAlchemy
+Flask-Login
+Flask-Migrate
+Flask-WTF
+email-validator
+python-dotenv
+
+# Data import / analysis
+pandas
+numpy
+openpyxl
+
+# Production web server (used when we deploy)
+waitress
+
+# Machine Learning (Phase 4)
+scikit-learn
+prophet
+
+# Reports (Phase 5)
+reportlab
