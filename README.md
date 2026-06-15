@@ -105,9 +105,12 @@ ransbet-iims/
 ## 📖 Documentation
 
 - **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)** — how the whole system works, the data model, the ML pipeline.
+- **[docs/DATABASE.md](docs/DATABASE.md)** — database design: ER diagram, all tables, relationships, sample queries.
 - **[docs/SETUP.md](docs/SETUP.md)** — install and run on a fresh laptop.
 - **[docs/TEAM.md](docs/TEAM.md)** — module ownership across the five members.
 - **[docs/VIVA.md](docs/VIVA.md)** — practice questions & answers for the defense.
+- **[docs/DEMO.md](docs/DEMO.md)** — step-by-step demonstration runbook.
+- **[docs/schema.sql](docs/schema.sql)** — the raw MySQL `CREATE TABLE` statements.
 - **[DEPLOY.md](DEPLOY.md)** — how the live deployment was done.
 
 ---
