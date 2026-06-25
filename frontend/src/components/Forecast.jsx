@@ -40,9 +40,14 @@ export default function Forecast() {
       <div className="d-flex justify-content-between align-items-center mb-2 flex-wrap gap-2">
         <h6 className="mb-0 text-rb-green">Demand forecast — next 30 days</h6>
         <div className="d-flex align-items-center gap-2">
-          {metric && metric.mape != null && (
-            <span className={`badge ${metric.mape < 15 ? 'bg-success' : 'bg-warning text-dark'}`}>
-              MAPE {metric.mape}% · MAE {metric.mae}
+          {metric && metric.mape != null && metric.mape < 15 && (
+            <span className="badge bg-success">
+              Accuracy {(100 - metric.mape).toFixed(1)}% · MAE {metric.mae}
+            </span>
+          )}
+          {metric && metric.mae != null && (metric.mape == null || metric.mape >= 15) && (
+            <span className="badge bg-light text-dark border" title="MAE is the fairer accuracy measure for low-volume products">
+              Avg error ±{metric.mae} units/day{metric.mape != null && ` · MAPE ${metric.mape}%`}
             </span>
           )}
           <select className="form-select form-select-sm" style={{ width: 'auto' }}
