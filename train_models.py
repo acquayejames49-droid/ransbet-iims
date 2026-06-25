@@ -69,15 +69,19 @@ def run_forecasting():
     ForecastMetric.query.delete()
     db.session.commit()
 
-    span = db.session.query(func.min(Sale.sale_date), func.max(Sale.sale_date)).first()
-    start, end = span
-    if not start:
+    if not Sale.query.first():
         print("  no sales data — run generate_sales.py first.")
         return
 
     products = Product.query.filter_by(is_active=True).all()
     for p in products:
-        s = daily_series(p.id, start, end)
+        # Use each product's OWN sales date range, so a product with real data
+        # isn't padded with fake zero-sales days from before it existed here.
+        p_start, p_end = (db.session.query(func.min(Sale.sale_date), func.max(Sale.sale_date))
+                          .filter(Sale.product_id == p.id).first())
+        if not p_start:
+            continue
+        s = daily_series(p.id, p_start, p_end)
         if (s > 0).sum() < 60:
             print(f"  {p.name}: not enough data, skipped")
             continue
@@ -86,6 +90,15 @@ def run_forecasting():
         # --- back-test for accuracy ---
         cutoff = df["ds"].max() - pd.Timedelta(days=BACKTEST_DAYS)
         train, test = df[df.ds <= cutoff], df[df.ds > cutoff]
+        # If the recent window has no sales (e.g. a restocking pause), back-test on
+        # the last window that DID have sales, so we still get an accuracy figure.
+        if (test.y > 0).sum() == 0:
+            nz = df[df.y > 0]
+            if not nz.empty:
+                anchor = nz["ds"].max()
+                sub = df[df.ds <= anchor]
+                cutoff = anchor - pd.Timedelta(days=BACKTEST_DAYS)
+                train, test = sub[sub.ds <= cutoff], sub[sub.ds > cutoff]
         mape = mae = rmse = None
         if len(test) >= 7:
             m_bt = fit_prophet(train)

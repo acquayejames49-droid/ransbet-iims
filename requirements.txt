@@ -11,6 +11,7 @@ python-dotenv
 pandas
 numpy
 openpyxl
+pdfplumber   # read Ransbet stock-card PDFs (import_stock_card.py)
 
 # Production web server (used when we deploy)
 waitress
