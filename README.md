@@ -48,7 +48,7 @@ See **[docs/TEAM.md](docs/TEAM.md)** for the module-ownership split (who built/p
 |-------|------------|
 | Presentation (frontend) | **React** + Vite + Recharts (single-page dashboard) + Bootstrap |
 | Application (backend) | **Python 3.12** + **Flask** (REST/JSON API) + Flask-Login (auth) + SQLAlchemy (ORM) |
-| Data | **MySQL 8.0** (relational database) |
+| Data | **MySQL 8.0** (relational database; SQLite used only for the free public demo — see [deployment note](docs/DEPLOYMENT_NOTE.md)) |
 | Machine learning | **Prophet** (forecasting), **scikit-learn** Isolation Forest (anomalies), pandas / NumPy |
 | Reporting | ReportLab (PDF), pandas (CSV/Excel) |
 | Deployment | PythonAnywhere (free cloud hosting), Git / GitHub |
@@ -113,6 +113,7 @@ ransbet-iims/
 - **[docs/DEMO.md](docs/DEMO.md)** — step-by-step demonstration runbook.
 - **[docs/schema.sql](docs/schema.sql)** — the raw MySQL `CREATE TABLE` statements.
 - **[DEPLOY.md](DEPLOY.md)** — how the live deployment was done.
+- **[docs/DEPLOYMENT_NOTE.md](docs/DEPLOYMENT_NOTE.md)** — which database runs where (MySQL vs SQLite) and why.
 
 ---
 
