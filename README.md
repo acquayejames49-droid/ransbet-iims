@@ -104,6 +104,7 @@ ransbet-iims/
 
 ## 📖 Documentation
 
+- **[docs/GLOSSARY.md](docs/GLOSSARY.md)** — plain-English reference: every tool, library, file & command explained for beginners.
 - **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)** — how the whole system works, the data model, the ML pipeline.
 - **[docs/DATABASE.md](docs/DATABASE.md)** — database design: ER diagram, all tables, relationships, sample queries.
 - **[docs/SETUP.md](docs/SETUP.md)** — install and run on a fresh laptop.
