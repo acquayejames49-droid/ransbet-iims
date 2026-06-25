@@ -28,6 +28,15 @@ A: It refreshes every 5 seconds by re-fetching the data (polling). To a user tha
 effectively real-time, and it's simpler and works on more hosts than WebSockets. We
 could upgrade to WebSockets for instant push if needed.
 
+**Q: Do you use synchronous or asynchronous requests?**
+A: Both. The server-rendered pages (login, forms) are synchronous — submit and wait
+for a full page reload. The dashboard is asynchronous: it uses JavaScript `async/await`
+with `fetch` to pull data in the background and refresh the charts every few seconds
+without freezing or reloading the page. To be precise, the *frontend* makes asynchronous
+requests while the *Flask backend* handles them synchronously (we didn't use Python's
+asyncio). You can see the async code in `frontend/src/lib/api.js` and a synchronous
+form route in `app/inventory.py`.
+
 ---
 
 ## Authentication & security

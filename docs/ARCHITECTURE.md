@@ -61,6 +61,27 @@ breaking the others.
 
 ---
 
+## 2.1 Synchronous vs asynchronous requests
+
+The system deliberately uses **both** request styles — one in each half of the app:
+
+- **Synchronous** — the server-rendered Flask pages (login, "add product", "record
+  sale"). The browser submits a form and **waits**, frozen, for the server to respond,
+  then the whole page reloads. See any form route in
+  [`app/inventory.py`](../app/inventory.py): it ends with `return redirect(...)`, i.e.
+  a full page round-trip.
+- **Asynchronous** — the React dashboard. The browser sends requests with JavaScript's
+  `async`/`await` + `fetch` and **keeps going** without freezing; the response is
+  handled when it arrives. See [`frontend/src/lib/api.js`](../frontend/src/lib/api.js)
+  (`await fetch(path)`). The 5-second auto-refresh fetches fresh data in the
+  background, which is what makes the dashboard feel live.
+
+> Precise statement: the **frontend makes asynchronous requests; the Flask backend
+> handles them synchronously** (we did not use Python's `async def`/asyncio). The
+> asynchronous behaviour lives in the browser/JavaScript.
+
+---
+
 ## 3. The data model (database tables)
 
 Defined in [`app/models.py`](../app/models.py) using SQLAlchemy. Foreign keys link
