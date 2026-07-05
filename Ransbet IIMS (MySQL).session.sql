@@ -1,0 +1,1 @@
+SELECT name, current_stock, reorder_point FROM products;

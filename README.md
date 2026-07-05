@@ -113,6 +113,7 @@ ransbet-iims/
 - **[docs/VIVA.md](docs/VIVA.md)** — practice questions & answers for the defense.
 - **[docs/DEMO.md](docs/DEMO.md)** — step-by-step demonstration runbook.
 - **[docs/schema.sql](docs/schema.sql)** — the raw MySQL `CREATE TABLE` statements.
+- **[docs/DEMO_QUERIES.md](docs/DEMO_QUERIES.md)** — practice SQL queries for the defense (easy → impressive).
 - **[DEPLOY.md](DEPLOY.md)** — how the live deployment was done.
 - **[docs/DEPLOYMENT_NOTE.md](docs/DEPLOYMENT_NOTE.md)** — which database runs where (MySQL vs SQLite) and why.
 
