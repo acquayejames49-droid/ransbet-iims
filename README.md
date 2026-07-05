@@ -104,6 +104,7 @@ ransbet-iims/
 
 ## 📖 Documentation
 
+- **[docs/USER_GUIDE.md](docs/USER_GUIDE.md)** — a complete beginner's tour of the website: what you see, every function, and the roles.
 - **[docs/GLOSSARY.md](docs/GLOSSARY.md)** — plain-English reference: every tool, library, file & command explained for beginners.
 - **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)** — how the whole system works, the data model, the ML pipeline.
 - **[docs/DATABASE.md](docs/DATABASE.md)** — database design: ER diagram, all tables, relationships, sample queries.
