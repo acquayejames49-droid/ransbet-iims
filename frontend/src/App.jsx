@@ -1,9 +1,7 @@
-// The root component. It first asks the server "who am I?" (/api/me). While
-// waiting it shows a loading line; once it knows the user it renders the
-// green header and the dashboard.
+// Root: asks "who am I?" then renders the sidebar + the dashboard.
 import { useEffect, useState } from 'react'
 import { getJSON } from './lib/api'
-import Navbar from './components/Navbar'
+import Sidebar from './components/Sidebar'
 import Dashboard from './components/Dashboard'
 
 export default function App() {
@@ -13,14 +11,12 @@ export default function App() {
     getJSON('/api/me').then(setMe).catch(() => {})
   }, [])
 
-  if (!me) {
-    return <div className="container py-5 text-center text-muted">Loading…</div>
-  }
+  if (!me) return <div className="p-5 text-center text-muted">Loading…</div>
 
   return (
-    <>
-      <Navbar me={me} />
-      <Dashboard me={me} />
-    </>
+    <div className="app-shell">
+      <Sidebar me={me} />
+      <main className="main"><Dashboard me={me} /></main>
+    </div>
   )
 }

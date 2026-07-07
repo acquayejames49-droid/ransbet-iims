@@ -307,3 +307,75 @@ def reminders():
         {"label": "Products without a barcode", "count": no_barcode, "color": "secondary", "href": "/products"},
     ]
     return jsonify(featured=featured, list=listed)
+
+
+# ---------------------------------------------------------------------------
+# Redesigned "Overview" dashboard data
+# ---------------------------------------------------------------------------
+@api_bp.route("/overview")
+@login_required
+def overview():
+    today = date.today()
+    products = Product.query.filter_by(is_active=True).all()
+    total = len(products) or 1
+    ok = sum(1 for p in products if p.stock_status == "ok")
+    units_in_stock = sum(p.current_stock for p in products)
+    stockout_risk = sum(1 for p in products if p.needs_restock)
+
+    # Forecasted revenue (next 30 days) = sum(predicted_qty * selling price)
+    price_by_pid = {p.id: (p.unit_price or 0) for p in products}
+    fc_rows = (db.session.query(Forecast.product_id, func.sum(Forecast.predicted_qty))
+               .group_by(Forecast.product_id).all())
+    forecasted_revenue = round(sum(float(t or 0) * price_by_pid.get(pid, 0)
+                                   for pid, t in fc_rows), 2)
+
+    # Forecast accuracy from the back-tested metrics
+    mapes = [m.mape for m in ForecastMetric.query.all() if m.mape is not None]
+    avg_mape = round(sum(mapes) / len(mapes), 1) if mapes else None
+    accuracy = round(100 - avg_mape, 1) if avg_mape is not None else None
+
+    # Revenue change: this month-to-date vs the same days last month
+    this_start = _month_start(today)
+    last_start = _add_months(this_start, -1)
+    prev_end = last_start + timedelta(days=(today - this_start).days)
+
+    def rev(a, b):
+        return float(db.session.query(func.sum(Sale.total))
+                     .filter(Sale.sale_date >= a, Sale.sale_date <= b).scalar() or 0)
+    cur_rev, prev_rev = rev(this_start, today), rev(last_start, prev_end)
+    rev_change = round((cur_rev - prev_rev) / prev_rev * 100, 1) if prev_rev else None
+
+    first_name = (current_user.name or "there").split()[0]
+    return jsonify(
+        user_first=first_name,
+        date=today.strftime("%A, %B ") + str(today.day),
+        optimal_pct=round(ok / total * 100),
+        kpis={
+            "forecasted_revenue": {"value": forecasted_revenue, "change": rev_change, "sub": "Next 30 days"},
+            "units_in_stock": {"value": units_in_stock, "change": None, "sub": f"Across {total} SKUs"},
+            "stockout_risk": {"value": stockout_risk, "change": None, "sub": "Reorder suggested"},
+            "forecast_accuracy": {"value": accuracy, "change": None,
+                                  "sub": f"MAPE: {avg_mape}%" if avg_mape is not None else "—"},
+        },
+    )
+
+
+@api_bp.route("/inventory-intelligence")
+@login_required
+def inventory_intelligence():
+    next7 = date.today() + timedelta(days=7)
+    fc = (db.session.query(Forecast.product_id, func.sum(Forecast.predicted_qty))
+          .filter(Forecast.forecast_date <= next7).group_by(Forecast.product_id).all())
+    demand = {pid: float(t or 0) for pid, t in fc}
+    labels = {"ok": "Healthy", "low": "Low", "reorder": "Critical"}
+    rows = []
+    for p in Product.query.filter_by(is_active=True).order_by(Product.name):
+        target = max(p.reorder_point * 2.5, 1)
+        rows.append({
+            "id": p.id, "name": p.name, "sku": p.sku or "—",
+            "stock": p.current_stock,
+            "stock_pct": min(100, round(p.current_stock / target * 100)),
+            "status": labels[p.stock_status],
+            "predicted": round(demand.get(p.id, 0)),
+        })
+    return jsonify(rows)

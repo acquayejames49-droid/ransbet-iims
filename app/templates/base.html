@@ -5,52 +5,114 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}Ransbet IIMS{% endblock %}</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
 {% if current_user.is_authenticated %}
-<nav class="navbar navbar-expand-lg navbar-dark rb-navbar px-3">
-  <a class="navbar-brand fw-bold" href="{{ url_for('main.dashboard') }}">Ransbet&nbsp;IIMS</a>
-  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="nav">
-    <ul class="navbar-nav me-auto">
-      <li class="nav-item"><a class="nav-link" href="{{ url_for('main.dashboard') }}">Dashboard</a></li>
-      <li class="nav-item"><a class="nav-link" href="{{ url_for('inventory.products') }}">Products</a></li>
-      <li class="nav-item"><a class="nav-link" href="{{ url_for('inventory.scan') }}">Scan</a></li>
-      <li class="nav-item"><a class="nav-link" href="{{ url_for('inventory.sales') }}">Sales</a></li>
-      <li class="nav-item"><a class="nav-link" href="{{ url_for('reports.reports_home') }}">Reports</a></li>
-      <li class="nav-item"><a class="nav-link" href="{{ url_for('inventory.movements') }}">Movements</a></li>
-      <li class="nav-item"><a class="nav-link" href="{{ url_for('inventory.suppliers') }}">Suppliers</a></li>
-      {% if current_user.role in ['manager', 'owner'] %}
-        <li class="nav-item"><a class="nav-link" href="{{ url_for('inventory.categories') }}">Categories</a></li>
-        <li class="nav-item"><a class="nav-link" href="{{ url_for('inventory.audit') }}">Audit log</a></li>
-        <li class="nav-item"><a class="nav-link text-warning" href="{{ url_for('data.data_home') }}">Import / Data</a></li>
-      {% endif %}
-    </ul>
-    <div class="d-flex align-items-center text-white">
-      <span class="me-3">{{ current_user.name }}
-        <span class="badge bg-secondary text-capitalize">{{ current_user.role }}</span>
+{% set p = request.path %}
+{% set is_manager = current_user.role in ['manager', 'owner'] %}
+<div class="app-shell">
+  <aside class="sidebar">
+    <a class="brand" href="{{ url_for('main.dashboard') }}">
+      <span class="brand-logo">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
       </span>
-      <a class="btn btn-outline-light btn-sm" href="{{ url_for('auth.logout') }}">Logout</a>
+      <span><div class="brand-name">Ransbet IIMS</div><div class="brand-sub">Tarkwa · Ghana</div></span>
+    </a>
+
+    <a class="nav-item {{ 'active' if p in ['/', '/dashboard'] }}" href="{{ url_for('main.dashboard') }}">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg>
+      <span>Overview</span>{% if p in ['/', '/dashboard'] %}<svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>{% endif %}
+    </a>
+    <a class="nav-item {{ 'active' if p.startswith('/products') }}" href="{{ url_for('inventory.products') }}">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+      <span>Inventory</span>
+    </a>
+    <a class="nav-item {{ 'active' if p.startswith('/scan') }}" href="{{ url_for('inventory.scan') }}">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><line x1="7" y1="12" x2="17" y2="12"/></svg>
+      <span>Scan</span>
+    </a>
+    <a class="nav-item {{ 'active' if p.startswith('/sales') }}" href="{{ url_for('inventory.sales') }}">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+      <span>Sales</span>
+    </a>
+    <a class="nav-item {{ 'active' if p.startswith('/movements') }}" href="{{ url_for('inventory.movements') }}">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+      <span>Movements</span>
+    </a>
+    <a class="nav-item {{ 'active' if p.startswith('/suppliers') }}" href="{{ url_for('inventory.suppliers') }}">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="1"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+      <span>Suppliers</span>
+    </a>
+    <a class="nav-item {{ 'active' if p.startswith('/reports') }}" href="{{ url_for('reports.reports_home') }}">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      <span>Reports</span>
+    </a>
+
+    {% if is_manager %}
+    <div class="nav-label">Manage</div>
+    <a class="nav-item {{ 'active' if p.startswith('/categories') }}" href="{{ url_for('inventory.categories') }}">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+      <span>Categories</span>
+    </a>
+    <a class="nav-item {{ 'active' if p.startswith('/audit') }}" href="{{ url_for('inventory.audit') }}">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+      <span>Audit log</span>
+    </a>
+    <a class="nav-item {{ 'active' if p.startswith('/data') }}" href="{{ url_for('data.data_home') }}">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      <span>Import / Data</span>
+    </a>
+    {% endif %}
+
+    <div class="ai-insight">
+      <div class="h">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        AI Insight
+      </div>
+      <p>Live demand forecasts and anomaly alerts are on the dashboard.</p>
+      <a href="{{ url_for('main.dashboard') }}">Open dashboard →</a>
     </div>
-  </div>
-</nav>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      {% set parts = current_user.name.split() %}
+      <span class="user-chip">
+        <span class="avatar">{{ parts[0][0]|upper }}{% if parts|length > 1 %}{{ parts[1][0]|upper }}{% endif %}</span>
+        <span><span class="nm">{{ current_user.name }}</span> <span class="role">{{ current_user.role }}</span></span>
+      </span>
+      <a class="btn btn-outline-secondary btn-sm" href="{{ url_for('auth.logout') }}">Logout</a>
+    </div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">{{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
+      {% endfor %}
+    {% endwith %}
+{% else %}
+<div class="login-wrap">
+  <div class="container" style="max-width: 460px;">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">{{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
+      {% endfor %}
+    {% endwith %}
 {% endif %}
 
-<div class="container py-4">
-  {% with messages = get_flashed_messages(with_categories=true) %}
-    {% for category, message in messages %}
-      <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-    {% endfor %}
-  {% endwith %}
+    {% block content %}{% endblock %}
 
-  {% block content %}{% endblock %}
+{% if current_user.is_authenticated %}
+  </main>
 </div>
+{% else %}
+  </div>
+</div>
+{% endif %}
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 {% block scripts %}{% endblock %}

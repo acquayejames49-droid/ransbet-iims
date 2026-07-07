@@ -1,46 +1,57 @@
-// The NetSuite-style home: reminders + tiles + KPIs on top, charts in the
-// middle, then the actionable restock/forecast/anomaly panels.
+// The redesigned "Overview" dashboard (Lovable style) — every existing panel is
+// preserved below under "More insights".
 import { useEffect, useState } from 'react'
+import { getJSON } from '../lib/api'
+import TopHeader from './TopHeader'
+import Hero from './Hero'
+import KpiRow from './KpiRow'
+import SalesForecast from './SalesForecast'
+import AnomalyFeed from './AnomalyFeed'
+import InventoryIntelligence from './InventoryIntelligence'
 import Reminders from './Reminders'
-import Tiles from './Tiles'
-import Kpis from './Kpis'
-import Gauge from './Gauge'
-import TopItems from './TopItems'
 import MonthlyTrend from './MonthlyTrend'
+import TopItems from './TopItems'
 import StockStatus from './StockStatus'
+import Gauge from './Gauge'
 import RestockAlerts from './RestockAlerts'
-import Forecast from './Forecast'
-import Anomalies from './Anomalies'
 
 export default function Dashboard({ me }) {
-  const [now, setNow] = useState('')
+  const [overview, setOverview] = useState(null)
   useEffect(() => {
-    const t = setInterval(() => setNow(new Date().toLocaleTimeString()), 1000)
-    return () => clearInterval(t)
+    function load() { getJSON('/api/overview').then(setOverview).catch(() => {}) }
+    load()
+    const id = setInterval(load, 8000)
+    return () => clearInterval(id)
   }, [])
-  const canManage = me?.role === 'manager' || me?.role === 'owner'
 
   return (
-    <div className="container-fluid py-3">
-      <div className="d-flex justify-content-between align-items-center mb-3">
-        <h4 className="mb-0 text-rb-green">Home</h4>
-        <span className="text-muted small"><span className="live-dot"></span> Live · {now}</span>
+    <>
+      <TopHeader me={me} overview={overview} />
+      <Hero overview={overview} />
+      <KpiRow overview={overview} />
+
+      <div className="row g-3 row-stretch">
+        <div className="col-lg-8"><SalesForecast /></div>
+        <div className="col-lg-4"><AnomalyFeed /></div>
       </div>
 
-      <div className="row">
-        <div className="col-lg-3"><Reminders /></div>
-        <div className="col-lg-6"><Tiles canManage={canManage} /><Kpis /></div>
-        <div className="col-lg-3"><Gauge /><TopItems /></div>
-      </div>
+      <InventoryIntelligence />
 
-      <div className="row">
+      <h5 className="text-rb-green mt-4 mb-3" style={{ fontWeight: 700 }}>More insights</h5>
+      <div className="row g-3 row-stretch">
+        <div className="col-lg-4"><Reminders /></div>
         <div className="col-lg-8"><MonthlyTrend /></div>
+      </div>
+      <div className="row g-3">
+        <div className="col-lg-4"><Gauge /></div>
+        <div className="col-lg-4"><TopItems /></div>
         <div className="col-lg-4"><StockStatus /></div>
       </div>
-
       <RestockAlerts />
-      <Forecast />
-      <Anomalies />
-    </div>
+
+      <div className="app-footer">
+        Ransbet Intelligent Inventory Management System · <b>University of Mines and Technology, Tarkwa</b>
+      </div>
+    </>
   )
 }
