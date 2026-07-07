@@ -86,7 +86,7 @@ that?", it's explained here in one or two simple sentences.
 ### The `frontend/` folder — the React source
 | Item | What it does |
 |------|--------------|
-| **frontend/src/** | The React code: `App.jsx`, `components/` (Dashboard, Navbar, Kpis, Forecast, …). |
+| **frontend/src/** | The React code: `App.jsx`, `components/` (Dashboard, Sidebar, KpiRow, SalesForecast, AnomalyFeed, InventoryIntelligence, …). |
 | **frontend/package.json** | The React project's library list and build commands. |
 
 ---

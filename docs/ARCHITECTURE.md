@@ -134,11 +134,15 @@ the tables; indexes are added on the columns used most for lookups.
 
 - The dashboard is a **single-page application**: the page loads once, then React
   updates the content in place.
-- Built from **components** (`frontend/src/components/`): `Navbar`, `Reminders`,
-  `Tiles`, `Kpis`, `Gauge`, `TopItems`, `MonthlyTrend`, `StockStatus`,
-  `RestockAlerts`, `Forecast`, `Anomalies`.
+- Built from **components** (`frontend/src/components/`). The dashboard shell is the
+  left **`Sidebar`**, the **`TopHeader`**, and the green **`Hero`** banner; the headline
+  figures are **`KpiRow`**; the AI section is **`SalesForecast`** (actual history +
+  predicted future on one chart) beside the live **`AnomalyFeed`**; and
+  **`InventoryIntelligence`** is the stock-vs-predicted-demand table. The "More insights"
+  panels reuse **`Reminders`**, **`Gauge`**, **`TopItems`**, **`MonthlyTrend`**,
+  **`StockStatus`** and **`RestockAlerts`**.
 - **State + hooks**: `useState` holds the fetched data; `useEffect` loads it on
-  start and sets the 5-second refresh timer.
+  start and sets a few-second refresh timer.
 - **Build-and-serve**: `npm run build` compiles the React source into
   `app/static/dashboard/`, and **Flask serves those static files**. This means one
   server in production (no separate Node server), and the session cookie works
