@@ -11,11 +11,15 @@
           {{ form.hidden_tag() }}
           <div class="mb-3">
             {{ form.email.label(class="form-label") }}
-            {{ form.email(class="form-control", placeholder="you@ransbet.com") }}
+            {{ form.email(class="form-control", placeholder="you@ransbet.com",
+                          type="email", autocapitalize="none", autocorrect="off",
+                          autocomplete="email", spellcheck="false") }}
           </div>
           <div class="mb-3">
             {{ form.password.label(class="form-label") }}
-            {{ form.password(class="form-control", placeholder="********") }}
+            {{ form.password(class="form-control", placeholder="********",
+                             autocapitalize="none", autocorrect="off",
+                             autocomplete="current-password", spellcheck="false") }}
           </div>
           <div class="form-check mb-3">
             {{ form.remember_me(class="form-check-input") }}
