@@ -40,7 +40,6 @@ export default function AnomalyFeed() {
             </div>
           </div>
         ))}
-        <a className="link-green" href="#inventory">View all anomalies →</a>
       </div>
     </div>
   )

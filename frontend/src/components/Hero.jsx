@@ -12,7 +12,7 @@ export default function Hero({ overview }) {
       <h1>Your inventory is projected to stay {pct}% optimal this month.</h1>
       <p>Based on the last 12 months of sales data, anomaly checks, and seasonal patterns.</p>
       <div className="hero-actions">
-        <a className="btn-white" href="#forecast">Run new forecast <Icon name="arrowUpRight" size={16} /></a>
+        <a className="btn-white" href="#forecast">View forecast <Icon name="arrowUpRight" size={16} /></a>
         <a className="btn-ghost" href="/reports"><Icon name="download" size={16} /> Export report</a>
       </div>
     </div>

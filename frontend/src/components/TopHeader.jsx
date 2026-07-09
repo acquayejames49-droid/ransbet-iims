@@ -13,13 +13,13 @@ export default function TopHeader({ me, overview }) {
         </div>
       </div>
       <div className="topbar-right">
-        <div className="search-box">
+        <form className="search-box" action="/products" method="get" role="search">
           <Icon name="search" size={18} />
-          <input placeholder="Search products, SKUs, suppliers…" />
-        </div>
-        <div className="icon-btn" title="Notifications">
+          <input name="q" placeholder="Search products or barcodes…" aria-label="Search products" />
+        </form>
+        <a className="icon-btn" href="#anomalies" title="View anomaly alerts">
           <Icon name="bell" size={19} /><span className="dot"></span>
-        </div>
+        </a>
         <a className="user-chip" href="/logout" title="Click to log out">
           <span className="avatar">{initials}</span>
           <span className="nm">{me.name}</span>

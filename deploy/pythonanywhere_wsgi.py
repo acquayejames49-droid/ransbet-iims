@@ -21,6 +21,13 @@ if project_home not in sys.path:
 
 # Use the ready-made SQLite database that comes with the repo.
 os.environ["DATABASE_URL"] = f"sqlite:////home/{USERNAME}/ransbet-iims/iims.db"
+
+# SECURITY — replace the placeholder below with your OWN long random string.
+# Generate one in a PythonAnywhere Bash console with:
+#     python3 -c "import secrets; print(secrets.token_hex(32))"
+# Paste the result here (keep the quotes), Save, then Reload. This file lives
+# ONLY on PythonAnywhere (it is NOT the copy in the public GitHub repo), so your
+# real key stays private. Never commit the real key.
 os.environ["SECRET_KEY"] = "CHANGE-ME-to-a-long-random-string-of-characters"
 
 from app import create_app
