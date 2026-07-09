@@ -58,3 +58,21 @@ deliberate, defensible choice that demonstrates correct use of database abstract
 > specified. For the cost‑free public deployment, SQLite is substituted for a paid
 > cloud MySQL instance; because the application uses the SQLAlchemy ORM, this requires
 > only a configuration change and no code change."*
+
+## Hosting and retraining: two more proposal substitutions
+
+The same "keep it affordable and simple" reasoning explains two other differences from
+the report's proposal:
+
+- **Hosting — AWS (EC2/S3/RDS) → PythonAnywhere (free tier).** AWS is powerful but costs
+  money beyond its trial and is complex to operate. The live demo runs free on
+  PythonAnywhere; local development uses the specified MySQL 8.0. Because the app uses the
+  SQLAlchemy ORM, the host and database are configuration, not code.
+- **Retraining — Celery (automatic, weekly) → a single command.** Celery needs an
+  always-on background worker plus a message broker (e.g. Redis), which a free host can't
+  run and which adds cost. Since retraining is weekly and not time-critical, we retrain by
+  running `python train_models.py` (which can be attached to a scheduled task on a paid
+  host). Same outcome, far less infrastructure.
+
+Both are deliberate, defensible choices for an academic prototype; neither changes the
+system's architecture.

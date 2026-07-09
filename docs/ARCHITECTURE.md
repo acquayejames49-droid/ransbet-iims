@@ -202,3 +202,23 @@ importing Ransbet's real sales). This refreshes all forecasts and anomalies.
   in the report). Because PythonAnywhere's free tier no longer offers MySQL, the
   free public demo uses SQLite — the same code, one configuration line different,
   thanks to the SQLAlchemy ORM abstracting the database.
+
+---
+
+## 9. Deviations from the report's proposal (and why)
+
+The delivered system differs from the report's tool list in four places. Each
+substitution keeps the system **affordable and low-maintenance for a medium-scale
+business** — the constraints established in Chapter 2 — while preserving the architecture
+the report describes. See [VIVA.md](VIVA.md) for spoken defences.
+
+| Area | Report proposed | Delivered | Why |
+|------|-----------------|-----------|-----|
+| Dashboard | Tableau / Power BI | React + Recharts | Tableau/Power BI are paid, standalone tools; React is free, embedded in the app, runs on any browser and deploys free |
+| Forecasting | Prophet **and** LSTM | Prophet (LSTM evaluated, not deployed) | LSTM is data-hungry and a black box; Prophet fits limited seasonal retail data, is transparent, and met the ≥85% target |
+| Hosting | AWS (EC2/S3/RDS) | PythonAnywhere (free) + local MySQL 8.0 | AWS costs money and adds complexity; the ORM makes the host/DB a one-line change (see [DEPLOYMENT_NOTE.md](DEPLOYMENT_NOTE.md)) |
+| Retraining | Celery (automatic, weekly) | `python train_models.py` (manual / schedulable) | Celery needs an always-on worker + broker, unavailable on a free host; weekly retraining isn't time-critical |
+
+These are engineering choices aligned with the project's core goal, not shortfalls: the
+three-tier design, relational database, REST API and ML pipeline are all delivered as
+specified.

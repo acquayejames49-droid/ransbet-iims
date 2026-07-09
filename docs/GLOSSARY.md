@@ -149,3 +149,6 @@ python train_models.py
 | **Back-testing** | Checking a forecast's accuracy by hiding recent real data, predicting it, and comparing. |
 | **MAPE / MAE** | Two ways to measure forecast error (a percentage vs. an average number of units). |
 | **Commit / Push** | Save a snapshot of the code (commit) and upload it to GitHub (push). |
+| **LSTM** | "Long Short-Term Memory" — an AI model (neural network) for time-series data that has a built-in *memory* of past values. A powerful but data-hungry alternative to Prophet; we evaluated it but deployed Prophet because it's transparent and works on limited data. |
+| **Celery** | A tool that runs jobs automatically on a schedule in the background (e.g. weekly model retraining). It needs an always-on server, so we retrain with a manual command instead. |
+| **Tableau / Power BI** | Paid business-intelligence dashboard tools named in the report; we built our dashboard with free, open-source React + Recharts instead. |

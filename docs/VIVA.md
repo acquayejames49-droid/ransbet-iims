@@ -55,6 +55,28 @@ A: Cross-Site Request Forgery — a malicious site tricking your browser into
 submitting a form. Flask-WTF adds a secret token to every form that the server
 verifies, so forged requests are rejected.
 
+**Q: What exactly hashes the passwords — could you reverse it?**
+A: `set_password()` runs the password through Werkzeug's `generate_password_hash`,
+which in our version uses **scrypt** — a salted, memory-hard, one-way hash. What's
+stored looks like `scrypt:32768:8:1$<salt>$<hash>`. You can't reverse it to the
+password; at login we hash the typed password and compare. Each user has a random
+salt, so identical passwords still produce different hashes.
+
+**Q: Walk me through what happens when I log in.**
+A: The login form (a Flask-WTF form, so its CSRF token is checked) submits email and
+password. We look up the user by email, call `check_password`, and if the user is
+missing *or* the password is wrong we return the **same** "Invalid email or password"
+message — so nobody can discover which emails exist. On success, `login_user()` starts
+a signed session cookie and redirects to the requested page (only if it's a safe local
+URL). The code is in `app/auth.py`.
+
+**Q: How would a user change their password?**
+A: Honestly, this version has no self-service "change password" screen yet — it's a
+noted next step. Passwords are set when accounts are created (`seed.py`), and an admin
+can reset one by calling `set_password()` (which re-hashes it). Adding a Change Password
+page is small because `User` already has `check_password` and `set_password`. (See
+`docs/AUTHENTICATION.md`.)
+
 ---
 
 ## Inventory
@@ -125,6 +147,45 @@ a copy to the cloud.
 **Q: Can two people use it at the same time and see each other's changes?**
 A: Yes. It's a multi-user web app with per-user logins; because the dashboard polls
 every 5 seconds, a change one user makes shows up on everyone's screen within seconds.
+
+---
+
+## Report vs. what we built — defending the swaps
+
+Four tools in the report differ from what we delivered. **Every swap went the same way
+for the same reason: to keep the system affordable and easy to run for a medium-scale
+business with a small budget and no IT staff — exactly the constraints our own Chapter 2
+identified.** Lead every answer with that: it turns "why didn't you follow the report?"
+into evidence of good engineering judgement.
+
+**Q: Your report mentions LSTM. Why did you deploy only Prophet?**
+A: LSTM is a neural network — powerful, but *data-hungry* and a "black box" that's hard
+to explain. Ransbet gave us about two years of fairly low per-product sales, and the
+owner needs forecasts he can trust. Prophet is built for seasonal retail data, trains in
+seconds on limited data, handles Ghanaian holidays directly, and is transparent — it
+splits the forecast into trend, weekly, yearly and holiday parts. It already met our ≥85%
+target (~13% MAPE), so we deployed Prophet and kept LSTM as documented future work.
+
+**Q: The report proposes Tableau for the dashboard. Why React?**
+A: Tableau and Power BI are paid, standalone tools a medium-scale supermarket can't
+sustain, and they bolt on separately. React with Recharts is free and open-source,
+embedded directly in our web app, works on any browser, uses our existing logins, and
+deploys on a free host — the same business-intelligence output within the cost and skills
+limits we identified.
+
+**Q: The report says AWS. Where is it actually hosted?**
+A: AWS is excellent but carries cost and complexity beyond a medium-scale retailer. We
+host the live demo free on PythonAnywhere and run the specified MySQL 8.0 locally. Because
+we use an ORM, moving between databases or hosts is a one-line change — so the three-tier
+cloud architecture is fully realised; only the provider differs, chosen to keep it free.
+(See [DEPLOYMENT_NOTE.md](DEPLOYMENT_NOTE.md).)
+
+**Q: The report mentions Celery for automatic weekly retraining. Did you use it?**
+A: No — deliberately. Celery needs an always-on background worker and a message broker
+(extra server software), which a free host can't run and which adds cost. Retraining
+happens only weekly and isn't time-critical, so we retrain with a single command
+(`python train_models.py`) that can be attached to a scheduler on a paid host later. Same
+result, far less infrastructure.
 
 ---
 
