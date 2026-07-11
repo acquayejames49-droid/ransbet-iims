@@ -88,7 +88,7 @@ def main():
     manager_ok = login(mgr, *MANAGER)
     check("manager can log in", manager_ok)
     if not manager_ok:
-        print("\n  Could not log in — is the server running / URL correct?")
+        print("\n  Could not log in - is the server running / URL correct?")
         print("=" * 52)
         sys.exit(1)
 

@@ -13,7 +13,11 @@
 import sys
 import os
 
-USERNAME = "aizen004"   # <-- your PythonAnywhere username (your URL prefix)
+# IMPORTANT: this must match your HOME-DIRECTORY name exactly, including capital
+# letters — Linux paths are case-sensitive. The Web tab shows it as
+# "/home/Aizen004" (capital A), so use that spelling here even though the website
+# URL (aizen004.pythonanywhere.com) is lowercase.
+USERNAME = "Aizen004"
 
 project_home = f"/home/{USERNAME}/ransbet-iims"
 if project_home not in sys.path:
