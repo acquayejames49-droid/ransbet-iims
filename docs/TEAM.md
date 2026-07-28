@@ -93,6 +93,6 @@ tables in SQLTools, explain how the live site was deployed.
 
 1. **Acquaye James** — intro + live demo of the dashboard (the "wow").
 2. **Abotsi Kafui Kosi** — add a product / record a sale (core workflow).
-3. **Mensah Alima Sylvia** — the AI: forecast + anomaly.
+3. **Acquah Joshua Mensah** — the AI: forecast + anomaly.
 4. **Mahama Lukeman** — reports, import, and the live deployment.
-5. **Acquah Joshua Mensah** — architecture & security wrap-up + Q&A lead.
+5.**Mensah Alima Sylvia** — architecture & security wrap-up + Q&A lead.
