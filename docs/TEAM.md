@@ -11,7 +11,7 @@ person's strengths.)
 ---
 
 ## 1. System Architecture, Authentication & Security
-**Owner: Acquah Joshua Mensah**
+**Owner: Mensah Alima Sylvia**
 
 - The Flask **application factory** and how the app is wired together.
 - **Login / logout**, password hashing, sessions, CSRF protection.
@@ -42,7 +42,7 @@ colour and rebuild (`npm run build`), demo two devices updating live.
 ---
 
 ## 3. Inventory Management
-**Owner: Abotsi Kafui Kosi**
+**Owner: Mahama Lukeman**
 
 - **Product catalogue** CRUD, categories, suppliers.
 - **Stock movements**: receive, sell, adjust — and how each updates stock + the ledger.
@@ -58,7 +58,7 @@ reorder-point logic, show the audit trail.
 ---
 
 ## 4. Artificial Intelligence (Forecasting & Anomaly Detection)
-**Owner: Mensah Alima Sylvia**
+**Owner: Acquah Joshua Mensah**
 
 - **Prophet** demand forecasting and how seasonality/holidays are modelled.
 - **Back-testing** and the accuracy metrics (MAPE / MAE / RMSE).
@@ -74,7 +74,7 @@ explain how an anomaly is "isolated", point to a flagged spike.
 ---
 
 ## 5. Database, Data Tools, Reporting & Deployment
-**Owner: Mahama Lukeman**
+**Owner: Acquah Joshua Mensah**
 
 - **MySQL** schema, the SQLAlchemy ORM, switching DB via `.env`.
 - **Bulk import/export** (CSV/Excel) and the danger-zone data wipe.
