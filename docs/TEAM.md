@@ -92,7 +92,7 @@ tables in SQLTools, explain how the live site was deployed.
 ## Suggested presentation order (≈ 12–15 min)
 
 1. **Acquaye James** — intro + live demo of the dashboard (the "wow").
-2. **Abotsi Kafui Kosi** — add a product / record a sale (core workflow).
+2. **Mahama Lukeman** — add a product / record a sale (core workflow).
 3. **Acquah Joshua Mensah** — the AI: forecast + anomaly.
-4. **Mahama Lukeman** — reports, import, and the live deployment.
+4. **Abotsi Kafui Kosi** — reports, import, and the live deployment.
 5. **Mensah Alima Sylvia** — architecture & security wrap-up + Q&A lead.
