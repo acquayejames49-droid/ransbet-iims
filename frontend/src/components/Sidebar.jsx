@@ -32,7 +32,7 @@ export default function Sidebar({ me }) {
   return (
     <aside className="sidebar">
       <a className="brand" href="/dashboard">
-        <span className="brand-logo"><Icon name="box" size={20} /></span>
+        <span className="brand-logo"><img src="/static/dashboard/ransbet-logo.png" alt="Ransbet" width={24} height={24} style={{objectFit: 'contain'}} /></span>
         <span>
           <div className="brand-name">Ransbet IIMS</div>
           <div className="brand-sub">Tarkwa · Ghana</div>
