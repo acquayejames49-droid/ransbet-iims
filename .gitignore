@@ -31,3 +31,6 @@ Thumbs.db
 
 # Temp helper scripts
 _smoke*.py
+
+*.db
+accuracy_*.txt

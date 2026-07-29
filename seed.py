@@ -10,6 +10,7 @@ from app import create_app, db
 from app.models import (User, Category, Supplier, Product, Sale, StockMovement,
                         ROLE_OWNER, ROLE_MANAGER, ROLE_STAFF)
 
+"initializes your Flask application using the configuration settings in your project"
 app = create_app()
 
 DEMO_USERS = [
@@ -93,6 +94,7 @@ def seed_catalogue():
           f"{len(CATEGORIES)} categories, 25 sample sales")
 
 
+"creates a working environment where the script can access your app's database connection"
 with app.app_context():
     db.create_all()
     print("Seeding...")

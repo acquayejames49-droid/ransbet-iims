@@ -1,5 +1,3 @@
-// The redesigned "Overview" dashboard (Lovable style) — every existing panel is
-// preserved below under "More insights".
 import { useEffect, useState } from 'react'
 import { getJSON } from '../lib/api'
 import TopHeader from './TopHeader'
