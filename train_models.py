@@ -26,7 +26,7 @@ logging.getLogger("prophet").setLevel(logging.ERROR)
 logging.getLogger("cmdstanpy").setLevel(logging.ERROR)
 
 app = create_app()
-FORECAST_DAYS = 30
+FORECAST_DAYS = 90
 BACKTEST_DAYS = 30
 MODELS_DIR = os.path.join(os.path.dirname(__file__), "models")
 
