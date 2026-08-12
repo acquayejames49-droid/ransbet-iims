@@ -10,7 +10,7 @@ export default function Hero({ overview }) {
       </svg>
       <span className="badge-live"><Icon name="zap" size={13} /> AI FORECAST LIVE</span>
       <h1>{pct}% of your products are at healthy stock levels.</h1>
-      <p>Based on 108 products with sales history from January 2025, using Prophet demand forecasts and Isolation Forest anomaly detection.</p>
+      <p>Based on 10 products with sales history from January 2025, using Prophet demand forecasts and Isolation Forest anomaly detection.</p>
       <div className="hero-actions">
         <a className="btn-white" href="#forecast">View forecast <Icon name="arrowUpRight" size={16} /></a>
         <a className="btn-ghost" href="/reports"><Icon name="download" size={16} /> Export report</a>
